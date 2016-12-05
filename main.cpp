@@ -45,6 +45,8 @@ int main()
     intializeGrid(); //puts letters in 4 spaces
     displayAddedGrid(); //shows the letters in the spaces
 
+
+
     infile.close();
 
 }
@@ -93,6 +95,26 @@ int checkColumn(int row, char c){
     }
     return 0;
 }
+int checkDiagonal(char c){
+
+     for(int i = 0; i < 4; i++){
+
+        cout << "ma pussy hurts" << endl;
+
+        for(int j = 0; j < 4; j++){
+
+            if(table[i][j] == c){
+                cout << " TEST 1" << endl;
+                return 1;
+            }
+            else if(table[4-i][j] == c){
+                cout << " TEST 2" << endl;
+                return 1;
+            }
+        }
+    }
+    return 0;
+}
 
 int randomNum(int maxNum){
 
@@ -106,7 +128,7 @@ char addToGrid(int row, int column,char c){ // this function takes in the row an
                                             // to put in. this only works if checkRow and Column
                                             // return a 0, which they only do if the fucntion works
 
-    if(checkRow(column, c) == 0 && checkColumn(row,c) == 0 && table[row][column] == ' '){
+    if(checkRow(column, c) == 0 && checkColumn(row,c) == 0 && table[row][column] == ' ' && checkDiagonal(c) == 0){
              //cout << "Added" << endl;
         return c;
     }
@@ -144,5 +166,6 @@ while(j < 4){
         //displayAddedGrid();
         //it seems like columns 1 and 4 are linked.??????/
 
+    }
 }
-}
+
