@@ -15,6 +15,8 @@ int randomNum(int maxNum);
 char addToGrid(int row, int column,char c);
 void displayAddedGrid();
 void intializeGrid();
+int checkDiagonal(char c);
+bool tableIsEmpty();
 
 string words[16]; //array set for all of our 16 words
 char word[4];  //this might be useless because but this is the characters in the chosen word
@@ -35,7 +37,7 @@ int main()
     }
     string startWord = words[randomNum(16)]; // this sets our word to startWord
 
-    cout << startWord << endl; // this is for testing, to see what the word is
+    //cout << startWord << endl; // this is for testing, to see what the word is
 
     for(int i = 0; i < 4;i++){ // this might be useless, it sets our string to an array which it already is. idk man
         word[i] = getChars(startWord, i);
@@ -43,10 +45,33 @@ int main()
 
     createEmptyGrid();// just for visualization, also assigns ' ' to each element
     intializeGrid(); //puts letters in 4 spaces
-    displayAddedGrid(); //shows the letters in the spaces
+   // displayAddedGrid(); //shows the letters in the spaces
 
 
+    while(tableIsEmpty() == false){
 
+        int row, column;
+        char c;
+
+        cout << toupper(startWord) << endl;
+
+        displayAddedGrid();
+
+        cout << "Row : " << endl;
+        cin >> row;
+
+        cout << "Column : " << endl;
+        cin >> column;
+
+        cout << "Char : " << endl;
+        cin >> c;
+
+        table[row - 1][column - 1] = addToGrid(row - 1,column - 1,c);
+        system("CLS");
+    }
+
+    displayAddedGrid();
+    cout << "You won" << endl;
     infile.close();
 
 }
@@ -74,13 +99,14 @@ void createEmptyGrid(){
 
     for(int i = 0; i < 4; i++){
         for(int j = 0; j < 4; j++){ // nested for loop to display grid
+            //cout << "Element []"<< endl;
             table[i][j] = ' ';
         }
     }
 }
 
 int checkRow(int column, char c){
-    for(int i = 0; i <= 4; i++){
+    for(int i = 0; i < 4; i++){
         if(table[i][column] == c){
         return 1;
         }
@@ -88,31 +114,45 @@ int checkRow(int column, char c){
     return 0;
 }
 int checkColumn(int row, char c){
-    for(int i = 0; i <= 4; i++){
+    for(int i = 0; i < 4; i++){
         if(table[row][i] == c){
-            return 1;
+        return 1;
         }
     }
     return 0;
 }
-int checkDiagonal(char c){
+int checkDiagonal(int row, int column, char c){
 
-     for(int i = 0; i < 4; i++){
-
-        cout << "ma pussy hurts" << endl;
+    if(row == column){
+    //cout << "row equals column " << endl;
+    for(int i = 0; i < 4; i++){
 
         for(int j = 0; j < 4; j++){
 
-            if(table[i][j] == c){
-                cout << " TEST 1" << endl;
+            if(i == j && table[i][j] == c){
+               //cout << "top left diag" << endl;
                 return 1;
+
             }
-            else if(table[4-i][j] == c){
-                cout << " TEST 2" << endl;
+
+        }
+
+    }
+    }
+
+    else if(3-row == column){
+    //cout << "3-row == column" << endl;
+        for(int i = 0; i < 4; i++){
+
+            for(int j = 0; j < 4; j++){
+                if((3 - i) == (j) && table[i][j] == c){
+                   // cout << "bottom left diag" << endl;
                 return 1;
+                }
             }
         }
     }
+    //cout << "Worked" << endl;
     return 0;
 }
 
@@ -128,7 +168,7 @@ char addToGrid(int row, int column,char c){ // this function takes in the row an
                                             // to put in. this only works if checkRow and Column
                                             // return a 0, which they only do if the fucntion works
 
-    if(checkRow(column, c) == 0 && checkColumn(row,c) == 0 && table[row][column] == ' ' && checkDiagonal(c) == 0){
+    if(checkRow(column, c) == 0 && checkColumn(row,c) == 0 && table[row][column] == ' ' && checkDiagonal(row,column,c) == 0){
              //cout << "Added" << endl;
         return c;
     }
@@ -169,3 +209,14 @@ while(j < 4){
     }
 }
 
+bool tableIsEmpty(){
+        for(int i = 0; i < 4; i++){
+
+            for(int j = 0; j < 4; j++){
+                    if(table[i][j] == ' '){
+                        return false;
+                    }
+            }
+    }
+    return true;
+}
